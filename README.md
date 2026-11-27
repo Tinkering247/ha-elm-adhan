@@ -38,6 +38,28 @@ same state names as `lupt.lupt`, so a state trigger only needs its entity change
 same timetable from the same page. Set **Asr begins at** and **Start the Islamic day at Maghrib**
 in the options to match your old settings.
 
+| `lupt` | East London Mosque Adhan |
+|---|---|
+| `states('lupt.lupt')` | `states('sensor.elm_adhan_current_prayer')` |
+| `state_attr('lupt.lupt', 'next_fajr')` | `states('sensor.elm_adhan_fajr')` |
+| `state_attr('lupt.lupt', 'next_ishā')` | `states('sensor.elm_adhan_isha')` (likewise `sunrise`, `zuhr`, `asr`, `maghrib`) |
+| `state_attr('lupt.lupt', 'islamic_date')` | `states('sensor.elm_adhan_islamic_date')` |
+
+### Dashboard example
+
+```yaml
+type: markdown
+title: Prayer times
+content: |
+  **Now:** {{ states('sensor.elm_adhan_current_prayer') }} · {{ states('sensor.elm_adhan_islamic_date') }}
+
+  | Prayer | Begins |
+  |---|---|
+  {% for p in ['fajr', 'sunrise', 'zuhr', 'asr', 'maghrib', 'isha'] -%}
+  | {{ state_attr('sensor.elm_adhan_' ~ p, 'friendly_name') | replace('ELM Adhan ', '') }} | {{ as_timestamp(states('sensor.elm_adhan_' ~ p)) | timestamp_custom('%H:%M') }} |
+  {% endfor %}
+```
+
 ## Installation
 
 ### Marketplace (Home Assistant 2026.11 and newer)
@@ -48,7 +70,11 @@ in the options to match your old settings.
 2. Enter `Tinkering247/ha-elm-adhan` and select **Add**. The first time, the Marketplace asks you
    to connect GitHub. That connection is read-only.
 3. Open **East London Mosque Adhan**, select **Install**, then finish the setup page that opens.
-   No restart is needed.
+   No restart is needed for the first install.
+
+**Updating:** the Marketplace offers new versions as an update entity. After updating, restart Home
+Assistant: a repair under **Settings → System → Repairs** reminds you. Home Assistant only loads an
+integration's code at startup, so reloading the integration is not enough.
 
 ### HACS (before 2026.11)
 
@@ -125,7 +151,7 @@ pytest
 ```
 
 [hacs]: https://hacs.xyz
-[hacs-badge]: https://img.shields.io/badge/HACS-Custom-41BDF5.svg
+[hacs-badge]: https://img.shields.io/badge/Marketplace%20%2F%20HACS-Custom-41BDF5.svg
 [validate]: https://github.com/Tinkering247/ha-elm-adhan/actions/workflows/validate.yml
 [validate-badge]: https://github.com/Tinkering247/ha-elm-adhan/actions/workflows/validate.yml/badge.svg
 [tests]: https://github.com/Tinkering247/ha-elm-adhan/actions/workflows/tests.yml
