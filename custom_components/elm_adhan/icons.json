@@ -1,0 +1,13 @@
+{
+  "entity": {
+    "binary_sensor": {
+      "live": {
+        "default": "mdi:broadcast-off",
+        "state": { "on": "mdi:broadcast" }
+      }
+    },
+    "sensor": {
+      "stream_url": { "default": "mdi:radio-tower" }
+    }
+  }
+}

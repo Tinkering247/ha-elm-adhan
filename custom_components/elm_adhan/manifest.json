@@ -1,0 +1,13 @@
+{
+  "domain": "elm_adhan",
+  "name": "East London Mosque Adhan",
+  "codeowners": ["@Tinkering247"],
+  "config_flow": true,
+  "documentation": "https://github.com/Tinkering247/ha-elm-adhan",
+  "integration_type": "service",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/Tinkering247/ha-elm-adhan/issues",
+  "requirements": [],
+  "single_config_entry": true,
+  "version": "1.0.0"
+}

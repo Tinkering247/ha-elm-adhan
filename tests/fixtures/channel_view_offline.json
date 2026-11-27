@@ -1,0 +1,191 @@
+{
+ "data": {
+  "id": "48516",
+  "type": "channel_view",
+  "attributes": {
+   "username": "eastlondonmosque",
+   "subdomain": "eastlondonmosque",
+   "about_me": "",
+   "theme_color": "#47ADD8",
+   "channel_id": 48516,
+   "owner_id": 3607562,
+   "gifs_in_chat_enabled": false,
+   "comment_reactions_enabled": true,
+   "links": [
+    {
+     "url": "http://www.eastlondonmosque.org.uk",
+     "type": "Website"
+    },
+    {
+     "url": "https://www.facebook.com/eastlondonmosque",
+     "type": "Facebook"
+    },
+    {
+     "url": "https://twitter.com/elondonmosque",
+     "type": "Twitter"
+    }
+   ],
+   "legacy_livepage_url": "https://mixlr.com/eastlondonmosque",
+   "followers_count": 9647,
+   "total_unique_listener_count": 23759299,
+   "artwork_url": null,
+   "profile_image_url": "https://mixlr.com/rails/active_storage/blobs/proxy/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBKzFDQmc9PSIsImV4cCI6bnVsbCwicHVyIjoiYmxvYl9pZCJ9fQ==--2fb9f95a16a41d0145b1e1ab5fc92156b84fcf71/4723d43a91d8182b2a67be2ec7e61fb6.gif",
+   "channel_view_enabled": true,
+   "live": false,
+   "artwork_original_key": null,
+   "logo_original_key": "4723d43a91d8182b2a67be2ec7e61fb6.gif",
+   "private": false,
+   "live_embed_player_enabled": true,
+   "fallback_enabled": false,
+   "recording_embed_player_enabled": true,
+   "live_streaming_enabled": true,
+   "channel_homepage_enabled": true,
+   "free_plan": false,
+   "embed_only": false,
+   "embed_domain": null,
+   "remove_embed_branding": false,
+   "remove_embed_share_button": false,
+   "media": {
+    "artwork": {
+     "image": {
+      "small": "https://imagescdn.mixlr.com/fallback-channel.png?w=256&h=256&fit=cover&format=auto&q=80&dpr=1&bg=47ADD8",
+      "medium": "https://imagescdn.mixlr.com/fallback-channel.png?w=1024&h=1024&fit=cover&format=auto&q=80&dpr=1&bg=47ADD8",
+      "large": "https://imagescdn.mixlr.com/fallback-channel.png?w=2048&h=2048&fit=cover&format=auto&q=80&dpr=1&bg=47ADD8"
+     },
+     "image_blur": {
+      "small": "https://imagescdn.mixlr.com/fallback-channel.png?w=256&h=256&fit=cover&format=auto&q=80&dpr=1&blur=80&bg=47ADD8",
+      "medium": "https://imagescdn.mixlr.com/fallback-channel.png?w=1024&h=1024&fit=cover&format=auto&q=80&dpr=1&blur=80&bg=47ADD8",
+      "large": "https://imagescdn.mixlr.com/fallback-channel.png?w=2048&h=2048&fit=cover&format=auto&q=80&dpr=1&blur=80&bg=47ADD8"
+     },
+     "image_seo": {
+      "og_image": "https://imagescdn.mixlr.com/fallback-channel.png?w=1200&h=630&fit=cover&format=png&q=80&dpr=1&bg=47ADD8"
+     },
+     "favicon": {
+      "x16": "https://imagescdn.mixlr.com/fallback-channel.png?w=16&h=16&fit=cover&format=png&q=80&dpr=1&bg=47ADD8",
+      "x32": "https://imagescdn.mixlr.com/fallback-channel.png?w=32&h=32&fit=cover&format=png&q=80&dpr=1&bg=47ADD8",
+      "x180": "https://imagescdn.mixlr.com/fallback-channel.png?w=180&h=180&fit=cover&format=png&q=80&dpr=1&bg=47ADD8",
+      "x192": "https://imagescdn.mixlr.com/fallback-channel.png?w=192&h=192&fit=cover&format=png&q=80&dpr=1&bg=47ADD8",
+      "x512": "https://imagescdn.mixlr.com/fallback-channel.png?w=512&h=512&fit=cover&format=png&q=80&dpr=1&bg=47ADD8"
+     }
+    },
+    "logo": {
+     "image": {
+      "small": "https://imagescdn.mixlr.com/4723d43a91d8182b2a67be2ec7e61fb6.gif?w=256&h=256&fit=cover&format=auto&q=80&dpr=1&bg=ffffff",
+      "medium": "https://imagescdn.mixlr.com/4723d43a91d8182b2a67be2ec7e61fb6.gif?w=1024&h=1024&fit=cover&format=auto&q=80&dpr=1&bg=ffffff",
+      "large": "https://imagescdn.mixlr.com/4723d43a91d8182b2a67be2ec7e61fb6.gif?w=2048&h=2048&fit=cover&format=auto&q=80&dpr=1&bg=ffffff"
+     },
+     "image_blur": {
+      "small": "https://imagescdn.mixlr.com/4723d43a91d8182b2a67be2ec7e61fb6.gif?w=256&h=256&fit=cover&format=auto&q=80&dpr=1&blur=80&bg=ffffff",
+      "medium": "https://imagescdn.mixlr.com/4723d43a91d8182b2a67be2ec7e61fb6.gif?w=1024&h=1024&fit=cover&format=auto&q=80&dpr=1&blur=80&bg=ffffff",
+      "large": "https://imagescdn.mixlr.com/4723d43a91d8182b2a67be2ec7e61fb6.gif?w=2048&h=2048&fit=cover&format=auto&q=80&dpr=1&blur=80&bg=ffffff"
+     },
+     "image_seo": {
+      "og_image": "https://imagescdn.mixlr.com/4723d43a91d8182b2a67be2ec7e61fb6.gif?w=1200&h=630&fit=cover&format=png&q=80&dpr=1&bg=ffffff"
+     },
+     "favicon": {
+      "x16": "https://imagescdn.mixlr.com/4723d43a91d8182b2a67be2ec7e61fb6.gif?w=16&h=16&fit=cover&format=png&q=80&dpr=1&bg=ffffff",
+      "x32": "https://imagescdn.mixlr.com/4723d43a91d8182b2a67be2ec7e61fb6.gif?w=32&h=32&fit=cover&format=png&q=80&dpr=1&bg=ffffff",
+      "x180": "https://imagescdn.mixlr.com/4723d43a91d8182b2a67be2ec7e61fb6.gif?w=180&h=180&fit=cover&format=png&q=80&dpr=1&bg=ffffff",
+      "x192": "https://imagescdn.mixlr.com/4723d43a91d8182b2a67be2ec7e61fb6.gif?w=192&h=192&fit=cover&format=png&q=80&dpr=1&bg=ffffff",
+      "x512": "https://imagescdn.mixlr.com/4723d43a91d8182b2a67be2ec7e61fb6.gif?w=512&h=512&fit=cover&format=png&q=80&dpr=1&bg=ffffff"
+     }
+    }
+   },
+   "network_available": false,
+   "network_owner": false,
+   "default_event_configuration": null
+  },
+  "relationships": {
+   "current_broadcast": {
+    "data": null
+   },
+   "public_current_broadcasts": {
+    "data": null
+   },
+   "upcoming_events": {
+    "data": [
+     {
+      "id": "5461518",
+      "type": "event"
+     }
+    ]
+   },
+   "live_event": {
+    "data": {
+     "id": "5461518",
+     "type": "event"
+    }
+   }
+  }
+ },
+ "included": [
+  {
+   "id": "5461518",
+   "type": "event",
+   "attributes": {
+    "pinned_comment": null,
+    "title": "eastlondonmosque's live event",
+    "description": null,
+    "starts_at": null,
+    "ends_at": null,
+    "started_at": "2026-11-27T13:12:40.413Z",
+    "ended_at": "2026-11-27T14:30:00.000Z",
+    "timezone": null,
+    "accesscode_link": null,
+    "accesscode_link_type": null,
+    "accesscode_copy": null,
+    "accesscode_enabled": null,
+    "hearting_enabled": true,
+    "stats_visible": true,
+    "broadcaster_id": 3607562,
+    "updated_at": "2026-11-27T13:12:40.413Z",
+    "access_level": "public",
+    "legacy_url": "https://mixlr.com/eastlondonmosque/events/5461518",
+    "active": false,
+    "adhoc": true,
+    "artwork_url": "https://imagescdn.mixlr.com/4723d43a91d8182b2a67be2ec7e61fb6.gif?w=2048&h=2048&fit=cover&format=auto&q=80&dpr=1&bg=47ADD8",
+    "artwork_original_key": "4723d43a91d8182b2a67be2ec7e61fb6.gif",
+    "artwork_mode": "theme",
+    "chat_enabled": false,
+    "color": "#47ADD8",
+    "fallback": false,
+    "scheduled_recording": false,
+    "media": {
+     "artwork": {
+      "image": {
+       "small": "https://imagescdn.mixlr.com/4723d43a91d8182b2a67be2ec7e61fb6.gif?w=256&h=256&fit=cover&format=auto&q=80&dpr=1&bg=47ADD8",
+       "medium": "https://imagescdn.mixlr.com/4723d43a91d8182b2a67be2ec7e61fb6.gif?w=1024&h=1024&fit=cover&format=auto&q=80&dpr=1&bg=47ADD8",
+       "large": "https://imagescdn.mixlr.com/4723d43a91d8182b2a67be2ec7e61fb6.gif?w=2048&h=2048&fit=cover&format=auto&q=80&dpr=1&bg=47ADD8"
+      },
+      "image_blur": {
+       "small": "https://imagescdn.mixlr.com/4723d43a91d8182b2a67be2ec7e61fb6.gif?w=256&h=256&fit=cover&format=auto&q=80&dpr=1&blur=80&bg=47ADD8",
+       "medium": "https://imagescdn.mixlr.com/4723d43a91d8182b2a67be2ec7e61fb6.gif?w=1024&h=1024&fit=cover&format=auto&q=80&dpr=1&blur=80&bg=47ADD8",
+       "large": "https://imagescdn.mixlr.com/4723d43a91d8182b2a67be2ec7e61fb6.gif?w=2048&h=2048&fit=cover&format=auto&q=80&dpr=1&blur=80&bg=47ADD8"
+      },
+      "image_seo": {
+       "og_image": "https://imagecdn.mixlr.com/cdn-cgi/image/fit=cover,format=png,width=1200,height=630/social_sharing/48516/events/5461518.png?v=1795785159"
+      },
+      "favicon": {
+       "x16": "https://imagescdn.mixlr.com/4723d43a91d8182b2a67be2ec7e61fb6.gif?w=16&h=16&fit=cover&format=png&q=80&dpr=1&bg=47ADD8",
+       "x32": "https://imagescdn.mixlr.com/4723d43a91d8182b2a67be2ec7e61fb6.gif?w=32&h=32&fit=cover&format=png&q=80&dpr=1&bg=47ADD8",
+       "x180": "https://imagescdn.mixlr.com/4723d43a91d8182b2a67be2ec7e61fb6.gif?w=180&h=180&fit=cover&format=png&q=80&dpr=1&bg=47ADD8",
+       "x192": "https://imagescdn.mixlr.com/4723d43a91d8182b2a67be2ec7e61fb6.gif?w=192&h=192&fit=cover&format=png&q=80&dpr=1&bg=47ADD8",
+       "x512": "https://imagescdn.mixlr.com/4723d43a91d8182b2a67be2ec7e61fb6.gif?w=512&h=512&fit=cover&format=png&q=80&dpr=1&bg=47ADD8"
+      }
+     }
+    }
+   },
+   "relationships": {
+    "current_broadcasts": {
+     "data": [
+      {
+       "id": "31989364",
+       "type": "broadcast"
+      }
+     ]
+    },
+    "channel": {}
+   }
+  }
+ ]
+}

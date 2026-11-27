@@ -1,0 +1,31 @@
+{
+ "username": "eastlondonmosque",
+ "id": 3607562,
+ "url": "https://mixlr.com/eastlondonmosque",
+ "profile_image_url": "https://mixlr-assets.s3.amazonaws.com/users/5edec00b19cbb608ded47442bfe05c2d/medium_square.gif?1435830388",
+ "about_me": "East London Mosque broadcasts live from the Mimbar. You will hear the call to prayer, the prayer itself and any talks after the prayer. In Ramadan hear all of the beautiful recitation for the Tarawih prayers. Times for the congregational (jama'ah) prayers are on our website: eastlondonmosque.org.uk",
+ "slug": "eastlondonmosque",
+ "permalink": "https://mixlr.com/users/3607562",
+ "latitude": 51.5174683,
+ "longitude": -0.0655785999999807,
+ "is_live": false,
+ "broadcast_ids": [],
+ "time_zone": "London",
+ "role": "Broadcaster",
+ "is_premium": true,
+ "plan": {
+  "name": "Mixlr Pro",
+  "reference": "pro",
+  "description": "Fully customizable radio station for your organisation"
+ },
+ "enterprise_account": false,
+ "enterprise_owner": false,
+ "channel": {
+  "logo_url": "https://imagescdn.mixlr.com/4723d43a91d8182b2a67be2ec7e61fb6.gif?w=256&h=256&fit=cover&format=auto&q=80&dpr=1&bg=ffffff",
+  "theme_color": "#47ADD8",
+  "name": "eastlondonmosque",
+  "url": "https://eastlondonmosque.mixlr.com"
+ },
+ "blocked_from_broadcasting": false,
+ "live_stream_url_enabled": true
+}

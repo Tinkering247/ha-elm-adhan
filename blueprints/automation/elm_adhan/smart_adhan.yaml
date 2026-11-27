@@ -1,0 +1,153 @@
+blueprint:
+  name: Smart Adhan (East London Mosque live, local fallback)
+  description: >-
+    At each prayer time, plays East London Mosque's live adhan if the mosque is
+    broadcasting. Otherwise it plays a local adhan recording instead.
+    Requires the East London Mosque Adhan integration.
+  domain: automation
+  source_url: https://github.com/Tinkering247/ha-elm-adhan/blob/main/blueprints/automation/elm_adhan/smart_adhan.yaml
+  homeassistant:
+    min_version: "2025.8.0"
+  input:
+    trigger_section:
+      name: Prayer times
+      icon: mdi:clock-outline
+      input:
+        prayer_entity:
+          name: Prayer time entity
+          description: >-
+            An entity whose state changes to the prayer name at each prayer time,
+            such as `lupt.lupt` from London Unified Prayer Times.
+          selector:
+            entity: {}
+        prayers:
+          name: Prayers
+          description: The states that trigger the adhan.
+          default: [Fajr, Zuhr, Asr, Maghrib, Ishā]
+          selector:
+            text:
+              multiple: true
+    playback_section:
+      name: Playback
+      icon: mdi:speaker
+      input:
+        speaker:
+          name: Speaker
+          selector:
+            entity:
+              filter:
+                domain: media_player
+        volume:
+          name: Volume
+          description: Set to 0 to leave the volume unchanged.
+          default: 0.5
+          selector:
+            number:
+              min: 0
+              max: 1
+              step: 0.05
+              mode: slider
+        fallback_media:
+          name: Fallback adhan
+          description: >-
+            Media content ID (URL or media-source path) to play when the live
+            stream is unavailable. Leave empty to play nothing.
+          default: ""
+          selector:
+            text: {}
+    stream_section:
+      name: Live stream
+      icon: mdi:broadcast
+      collapsed: true
+      input:
+        live_entity:
+          name: Live sensor
+          default: binary_sensor.elm_adhan_live
+          selector:
+            entity:
+              filter:
+                integration: elm_adhan
+                domain: binary_sensor
+        url_entity:
+          name: Stream URL sensor
+          default: sensor.elm_adhan_stream_url
+          selector:
+            entity:
+              filter:
+                integration: elm_adhan
+                domain: sensor
+        wait_for_live:
+          name: Wait for the broadcast to start
+          description: >-
+            Seconds to wait for the mosque to go live after the prayer time
+            before falling back. The broadcast often starts a little late.
+          default: 90
+          selector:
+            number:
+              min: 0
+              max: 600
+              unit_of_measurement: s
+
+mode: restart
+
+triggers:
+  - trigger: state
+    entity_id: !input prayer_entity
+    to: !input prayers
+
+variables:
+  live_entity: !input live_entity
+  url_entity: !input url_entity
+  volume: !input volume
+  fallback_media: !input fallback_media
+  wait_for_live: !input wait_for_live
+
+actions:
+  # Re-check Mixlr every 15 s, so a late broadcast is caught and the URL is
+  # current rather than up to one polling interval old.
+  - repeat:
+      sequence:
+        - action: homeassistant.update_entity
+          target:
+            entity_id: !input live_entity
+        - if:
+            - condition: template
+              value_template: "{{ not is_state(live_entity, 'on') and repeat.index * 15 < wait_for_live }}"
+          then:
+            - delay:
+                seconds: 15
+      until:
+        - condition: template
+          value_template: "{{ is_state(live_entity, 'on') or repeat.index * 15 >= wait_for_live }}"
+  - if:
+      - condition: template
+        value_template: "{{ volume | float(0) > 0 }}"
+    then:
+      - action: media_player.volume_set
+        target:
+          entity_id: !input speaker
+        data:
+          volume_level: "{{ volume }}"
+  - choose:
+      - conditions:
+          - condition: template
+            value_template: >-
+              {{ is_state(live_entity, 'on')
+                 and states(url_entity) not in ['unknown', 'unavailable', 'none', ''] }}
+        sequence:
+          - action: media_player.play_media
+            target:
+              entity_id: !input speaker
+            data:
+              media_content_id: "{{ states(url_entity) }}"
+              media_content_type: music
+      - conditions:
+          - condition: template
+            value_template: "{{ fallback_media | length > 0 }}"
+        sequence:
+          - action: media_player.play_media
+            target:
+              entity_id: !input speaker
+            data:
+              media_content_id: "{{ fallback_media }}"
+              media_content_type: music
