@@ -27,26 +27,86 @@ blueprint:
           selector:
             text:
               multiple: true
+        fajr_name:
+          name: Name of the Fajr state
+          description: Used for the Fajr volume and stop time below.
+          default: Fajr
+          selector:
+            text: {}
     playback_section:
       name: Playback
       icon: mdi:speaker
       input:
-        speaker:
-          name: Speaker
+        speakers:
+          name: Speakers
+          description: Played with `media_player.play_media`.
+          default: []
           selector:
             entity:
+              multiple: true
+              filter:
+                domain: media_player
+        extractor_speakers:
+          name: Speakers that need Media Extractor
+          description: >-
+            Played with `media_extractor.play_media` instead. Some Cast
+            speakers need this for Mixlr streams. Requires the Media Extractor
+            integration.
+          default: []
+          selector:
+            entity:
+              multiple: true
+              filter:
+                domain: media_player
+        pause_players:
+          name: Pause first
+          description: Media players to pause before the adhan, such as a TV.
+          default: []
+          selector:
+            entity:
+              multiple: true
               filter:
                 domain: media_player
         volume:
           name: Volume
           description: Set to 0 to leave the volume unchanged.
-          default: 0.5
+          default: 0.4
           selector:
             number:
               min: 0
               max: 1
               step: 0.05
               mode: slider
+        fajr_volume:
+          name: Fajr volume
+          description: Set to 0 to use the volume above.
+          default: 0
+          selector:
+            number:
+              min: 0
+              max: 1
+              step: 0.05
+              mode: slider
+        stop_after:
+          name: Stop after (minutes)
+          description: >-
+            The live broadcast carries on into the prayer and any talk. Stop
+            the speakers after this long. Set to 0 to never stop.
+          default: 30
+          selector:
+            number:
+              min: 0
+              max: 180
+              unit_of_measurement: min
+        fajr_stop_after:
+          name: Stop after at Fajr (minutes)
+          description: Set to 0 to use the value above.
+          default: 0
+          selector:
+            number:
+              min: 0
+              max: 180
+              unit_of_measurement: min
         fallback_media:
           name: Fallback adhan
           description: >-
@@ -98,18 +158,38 @@ triggers:
 variables:
   live_entity: !input live_entity
   url_entity: !input url_entity
-  volume: !input volume
-  fallback_media: !input fallback_media
+  speakers: !input speakers
+  extractor_speakers: !input extractor_speakers
+  pause_players: !input pause_players
+  fajr_name: !input fajr_name
   wait_for_live: !input wait_for_live
+  fallback_media: !input fallback_media
+  is_fajr: "{{ trigger.to_state.state == fajr_name }}"
+  base_volume: !input volume
+  fajr_volume: !input fajr_volume
+  volume: "{{ fajr_volume if is_fajr and fajr_volume | float(0) > 0 else base_volume }}"
+  base_stop: !input stop_after
+  fajr_stop: !input fajr_stop_after
+  stop_minutes: "{{ fajr_stop if is_fajr and fajr_stop | int(0) > 0 else base_stop }}"
+  all_speakers: "{{ (speakers + extractor_speakers) | unique | list }}"
 
 actions:
+  - if:
+      - condition: template
+        value_template: "{{ pause_players | length > 0 }}"
+    then:
+      - action: media_player.media_pause
+        target:
+          entity_id: "{{ pause_players }}"
+        continue_on_error: true
+
   # Re-check Mixlr every 15 s, so a late broadcast is caught and the URL is
   # current rather than up to one polling interval old.
   - repeat:
       sequence:
         - action: homeassistant.update_entity
           target:
-            entity_id: !input live_entity
+            entity_id: "{{ live_entity }}"
         - if:
             - condition: template
               value_template: "{{ not is_state(live_entity, 'on') and repeat.index * 15 < wait_for_live }}"
@@ -119,35 +199,66 @@ actions:
       until:
         - condition: template
           value_template: "{{ is_state(live_entity, 'on') or repeat.index * 15 >= wait_for_live }}"
+
+  - variables:
+      media: >-
+        {% if is_state(live_entity, 'on')
+              and states(url_entity) not in ['unknown', 'unavailable', 'none', ''] %}
+          {{ states(url_entity) }}
+        {% else %}
+          {{ fallback_media }}
+        {% endif %}
+
+  - condition: template
+    value_template: "{{ media | length > 0 and all_speakers | length > 0 }}"
+
+  - action: media_player.turn_on
+    target:
+      entity_id: "{{ all_speakers }}"
+    continue_on_error: true
+
   - if:
       - condition: template
         value_template: "{{ volume | float(0) > 0 }}"
     then:
       - action: media_player.volume_set
         target:
-          entity_id: !input speaker
+          entity_id: "{{ all_speakers }}"
         data:
-          volume_level: "{{ volume }}"
-  - choose:
-      - conditions:
+          volume_level: "{{ volume | float }}"
+        continue_on_error: true
+
+  - parallel:
+      - if:
           - condition: template
-            value_template: >-
-              {{ is_state(live_entity, 'on')
-                 and states(url_entity) not in ['unknown', 'unavailable', 'none', ''] }}
-        sequence:
+            value_template: "{{ speakers | length > 0 }}"
+        then:
           - action: media_player.play_media
             target:
-              entity_id: !input speaker
+              entity_id: "{{ speakers }}"
             data:
-              media_content_id: "{{ states(url_entity) }}"
+              media_content_id: "{{ media }}"
               media_content_type: music
-      - conditions:
+            continue_on_error: true
+      - if:
           - condition: template
-            value_template: "{{ fallback_media | length > 0 }}"
-        sequence:
-          - action: media_player.play_media
+            value_template: "{{ extractor_speakers | length > 0 }}"
+        then:
+          - action: media_extractor.play_media
             target:
-              entity_id: !input speaker
+              entity_id: "{{ extractor_speakers }}"
             data:
-              media_content_id: "{{ fallback_media }}"
+              media_content_id: "{{ media }}"
               media_content_type: music
+            continue_on_error: true
+
+  - if:
+      - condition: template
+        value_template: "{{ stop_minutes | int(0) > 0 }}"
+    then:
+      - delay:
+          minutes: "{{ stop_minutes | int }}"
+      - action: media_player.media_stop
+        target:
+          entity_id: "{{ all_speakers }}"
+        continue_on_error: true
