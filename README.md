@@ -3,21 +3,40 @@
 [![hacs][hacs-badge]][hacs] [![Validate][validate-badge]][validate] [![Tests][tests-badge]][tests]
 
 Play the **live adhan from East London Mosque** on your speakers at every prayer time, and fall
-back to a local recording when the mosque isn't broadcasting.
+back to a local recording when the mosque isn't broadcasting. The mosque's own **prayer timetable**
+is included, so nothing else is needed.
 
-The mosque streams from the mimbar on [Mixlr](https://eastlondonmosque.mixlr.com). Each broadcast
-gets a new stream URL. This integration polls Mixlr's public API for the current one, checks that
-audio is actually flowing, and exposes the result as Home Assistant entities. It needs no browser,
-no MQTT and no cron job.
+- **Prayer times:** the mosque publishes the year's London Unified Prayer Times on
+  [its website](https://www.eastlondonmosque.org.uk/prayer-times). The integration reads that
+  timetable twice a day and keeps the last good copy, so a website outage changes nothing. Entities
+  update exactly at each prayer time.
+- **Live adhan:** the mosque streams from the mimbar on
+  [Mixlr](https://eastlondonmosque.mixlr.com). Each broadcast gets a new stream URL. The integration
+  polls Mixlr's public API for the current one and checks that audio is actually flowing. It needs
+  no browser, no MQTT and no cron job.
 
-> Unofficial. Not affiliated with or endorsed by East London Mosque or Mixlr.
+> Unofficial. Not affiliated with or endorsed by East London Mosque, London Salah Times or Mixlr.
+> Prayer times are produced by [London Salah Times](https://londonsalahtimes.com/) and published by
+> East London Mosque.
 
 ## Entities
 
 | Entity | State | Attributes |
 |---|---|---|
+| `sensor.elm_adhan_current_prayer` | `Fajr`, `Sunrise`, `Zuhr`, `Asr`, `Maghrib` or `Ishā`: the latest to begin (`Ishā` overnight) | `next_prayer`, `next_prayer_time`, timetable range |
+| `sensor.elm_adhan_fajr` … `sensor.elm_adhan_isha`, `sensor.elm_adhan_sunrise` | When each next begins (timestamp) | `jamaah`; Asr also has `mithl_1`, `mithl_2` |
+| `sensor.elm_adhan_<prayer>_jamaah` | When the congregation next starts (timestamp). *Disabled by default* | |
+| `sensor.elm_adhan_islamic_date` | e.g. `17 Jumāda Al-Ākhirah 1448`, as published by the mosque | `day`, `month`, `year` |
 | `binary_sensor.elm_adhan_live` | `on` while the mosque is broadcasting and the stream answers | |
 | `sensor.elm_adhan_stream_url` | The live stream URL. Off air, the last URL that played | `live`, `source`, `last_live` |
+
+The timestamp sensors work directly as `time` triggers, for example
+`trigger: time` with `at: sensor.elm_adhan_fajr`.
+
+**Coming from London Unified Prayer Times (`lupt`)?** `sensor.elm_adhan_current_prayer` uses the
+same state names as `lupt.lupt`, so a state trigger only needs its entity changed. Both read the
+same timetable from the same page. Set **Asr begins at** and **Start the Islamic day at Maghrib**
+in the options to match your old settings.
 
 ## Installation
 
@@ -45,9 +64,17 @@ restart.
 
 ## Configuration
 
-No setup fields are needed. Under **Configure** you can change the polling interval
-(default 5 minutes, range 1–60). The blueprint re-checks every 15 seconds around prayer time, so
-the polling interval only affects how up to date the sensors are the rest of the day.
+No setup fields are needed. Under **Configure**:
+
+| Option | Default | |
+|---|---|---|
+| Asr begins at | 1 mithl | Choose 2 mithl for the Ḥanafī time |
+| Start the Islamic day at Maghrib | on | Off changes the Islamic date at midnight |
+| Stream polling interval | 5 min | The blueprint re-checks every 15 s around prayer time anyway |
+
+If the stored timetable is within two weeks of running out, for example at the end of the year
+before the mosque publishes the next one, a repair issue appears under **Settings → System →
+Repairs**. It clears itself once the new timetable is online.
 
 ## Blueprint: Smart Adhan
 
@@ -63,12 +90,12 @@ At each prayer time the blueprint:
 4. Stops the speakers after *Stop after* minutes (default 30; Fajr can have its own value). The
    live broadcast carries on into the prayer and any talk.
 
-It is triggered by an entity whose state changes to the prayer name, such as `lupt.lupt` from
-London Unified Prayer Times. Any entity works, as long as its states match the **Prayers** list.
+It is triggered by `sensor.elm_adhan_current_prayer` by default. Any entity works, such as
+`lupt.lupt`, as long as its states match the **Prayers** list.
 
 | Input | Default |
 |---|---|
-| Prayer time entity | *(required)* |
+| Prayer time entity | `sensor.elm_adhan_current_prayer` |
 | Prayers | `Fajr`, `Zuhr`, `Asr`, `Maghrib`, `Ishā` |
 | Speakers (`media_player.play_media`) | *(none)* |
 | Speakers that need Media Extractor (`media_extractor.play_media`) | *(none)* |

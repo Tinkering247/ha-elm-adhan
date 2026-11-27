@@ -11,7 +11,7 @@ from pytest_homeassistant_custom_component.test_util.aiohttp import AiohttpClien
 
 from custom_components.elm_adhan.const import DOMAIN
 
-from .conftest import CHANNEL_VIEW, LIVE_URL, PAGE, USERS, mock_live, mock_offline
+from .conftest import CHANNEL_VIEW, LIVE_URL, PAGE, USERS, mock_live, mock_offline, mock_timetable
 
 SENSOR = "sensor.elm_adhan_stream_url"
 BINARY = "binary_sensor.elm_adhan_live"
@@ -44,7 +44,7 @@ async def test_goes_off_air_keeps_last_url(
 
     aioclient_mock.clear_requests()
     mock_offline(aioclient_mock)
-    await entry.runtime_data.async_refresh()
+    await entry.runtime_data.stream.async_refresh()
     await hass.async_block_till_done()
 
     assert hass.states.get(BINARY).state == STATE_OFF
@@ -62,7 +62,7 @@ async def test_unreachable_marks_unavailable(
     aioclient_mock.clear_requests()
     for url in (CHANNEL_VIEW, USERS, PAGE):
         aioclient_mock.get(url, status=503)
-    await entry.runtime_data.async_refresh()
+    await entry.runtime_data.stream.async_refresh()
     await hass.async_block_till_done()
 
     assert hass.states.get(BINARY).state == STATE_UNAVAILABLE
@@ -74,6 +74,7 @@ async def test_setup_retries_when_unreachable(
     """Setup is retried if Mixlr cannot be reached at startup."""
     for url in (CHANNEL_VIEW, USERS, PAGE):
         aioclient_mock.get(url, status=503)
+    mock_timetable(aioclient_mock)
     entry = await _setup(hass)
     assert entry.state is ConfigEntryState.SETUP_RETRY
 

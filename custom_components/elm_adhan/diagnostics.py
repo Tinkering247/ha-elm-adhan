@@ -14,12 +14,25 @@ async def async_get_config_entry_diagnostics(
     hass: HomeAssistant, entry: ElmAdhanConfigEntry
 ) -> dict[str, Any]:
     """Return diagnostics for a config entry."""
-    coordinator = entry.runtime_data
-    data = asdict(coordinator.data) if coordinator.data else None
-    if data and data["last_live"]:
-        data["last_live"] = data["last_live"].isoformat()
+    stream = entry.runtime_data.stream
+    timetable = entry.runtime_data.timetable
+
+    stream_data = asdict(stream.data) if stream.data else None
+    if stream_data and stream_data["last_live"]:
+        stream_data["last_live"] = stream_data["last_live"].isoformat()
+
+    days = timetable.data or {}
     return {
         "options": dict(entry.options),
-        "last_update_success": coordinator.last_update_success,
-        "data": data,
+        "stream": {
+            "last_update_success": stream.last_update_success,
+            "data": stream_data,
+        },
+        "timetable": {
+            "last_update_success": timetable.last_update_success,
+            "last_fetch_error": timetable.last_fetch_error,
+            "days": len(days),
+            "first_day": min(days).isoformat() if days else None,
+            "last_day": max(days).isoformat() if days else None,
+        },
     }

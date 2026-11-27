@@ -16,8 +16,10 @@ blueprint:
         prayer_entity:
           name: Prayer time entity
           description: >-
-            An entity whose state changes to the prayer name at each prayer time,
-            such as `lupt.lupt` from London Unified Prayer Times.
+            An entity whose state changes to the prayer name at each prayer time.
+            The integration's own Current prayer sensor does this. `lupt.lupt`
+            from London Unified Prayer Times also works.
+          default: sensor.elm_adhan_current_prayer
           selector:
             entity: {}
         prayers:

@@ -2,19 +2,23 @@
 
 from __future__ import annotations
 
+from typing import Any
+
 from homeassistant.helpers.device_registry import DeviceEntryType, DeviceInfo
-from homeassistant.helpers.update_coordinator import CoordinatorEntity
+from homeassistant.helpers.update_coordinator import (
+    CoordinatorEntity,
+    DataUpdateCoordinator,
+)
 
 from .const import CHANNEL_PAGE, DOMAIN
-from .coordinator import ElmAdhanCoordinator
 
 
-class ElmAdhanEntity(CoordinatorEntity[ElmAdhanCoordinator]):
+class ElmAdhanEntity[_C: DataUpdateCoordinator[Any]](CoordinatorEntity[_C]):
     """Shared device and naming for all entities."""
 
     _attr_has_entity_name = True
 
-    def __init__(self, coordinator: ElmAdhanCoordinator, key: str) -> None:
+    def __init__(self, coordinator: _C, key: str) -> None:
         """Initialise the entity."""
         super().__init__(coordinator)
         entry_id = coordinator.config_entry.entry_id

@@ -18,7 +18,11 @@ from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .const import (
     CHANNEL,
+    CONF_ASR_MITHL,
+    CONF_ISLAMIC_DATE_AT_MAGHRIB,
     CONF_SCAN_INTERVAL,
+    DEFAULT_ASR_MITHL,
+    DEFAULT_ISLAMIC_DATE_AT_MAGHRIB,
     DEFAULT_SCAN_INTERVAL_MIN,
     DOMAIN,
     MAX_SCAN_INTERVAL_MIN,
@@ -60,7 +64,7 @@ class ElmAdhanConfigFlow(ConfigFlow, domain=DOMAIN):
 
 
 class ElmAdhanOptionsFlow(OptionsFlowWithReload):
-    """Let the user change how often Mixlr is polled."""
+    """Asr time, Islamic date rollover, and how often Mixlr is polled."""
 
     async def async_step_init(
         self, user_input: dict[str, Any] | None = None
@@ -69,13 +73,28 @@ class ElmAdhanOptionsFlow(OptionsFlowWithReload):
         if user_input is not None:
             return self.async_create_entry(data=user_input)
 
+        options = self.config_entry.options
         schema = vol.Schema(
             {
                 vol.Required(
-                    CONF_SCAN_INTERVAL,
-                    default=self.config_entry.options.get(
-                        CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL_MIN
+                    CONF_ASR_MITHL,
+                    default=options.get(CONF_ASR_MITHL, DEFAULT_ASR_MITHL),
+                ): selector.SelectSelector(
+                    selector.SelectSelectorConfig(
+                        options=["1", "2"],
+                        translation_key=CONF_ASR_MITHL,
+                        mode=selector.SelectSelectorMode.LIST,
+                    )
+                ),
+                vol.Required(
+                    CONF_ISLAMIC_DATE_AT_MAGHRIB,
+                    default=options.get(
+                        CONF_ISLAMIC_DATE_AT_MAGHRIB, DEFAULT_ISLAMIC_DATE_AT_MAGHRIB
                     ),
+                ): selector.BooleanSelector(),
+                vol.Required(
+                    CONF_SCAN_INTERVAL,
+                    default=options.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL_MIN),
                 ): vol.All(
                     selector.NumberSelector(
                         selector.NumberSelectorConfig(
@@ -87,7 +106,7 @@ class ElmAdhanOptionsFlow(OptionsFlowWithReload):
                         )
                     ),
                     vol.Coerce(int),
-                )
+                ),
             }
         )
         return self.async_show_form(step_id="init", data_schema=schema)

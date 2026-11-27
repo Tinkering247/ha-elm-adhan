@@ -3,11 +3,54 @@
     "binary_sensor": {
       "live": {
         "default": "mdi:broadcast-off",
-        "state": { "on": "mdi:broadcast" }
+        "state": {
+          "on": "mdi:broadcast"
+        }
       }
     },
     "sensor": {
-      "stream_url": { "default": "mdi:radio-tower" }
+      "stream_url": {
+        "default": "mdi:radio-tower"
+      },
+      "current_prayer": {
+        "default": "mdi:mosque"
+      },
+      "islamic_date": {
+        "default": "mdi:calendar-star"
+      },
+      "fajr": {
+        "default": "mdi:weather-night"
+      },
+      "sunrise": {
+        "default": "mdi:weather-sunset-up"
+      },
+      "zuhr": {
+        "default": "mdi:weather-sunny"
+      },
+      "asr": {
+        "default": "mdi:weather-partly-cloudy"
+      },
+      "maghrib": {
+        "default": "mdi:weather-sunset-down"
+      },
+      "isha": {
+        "default": "mdi:moon-waning-crescent"
+      },
+      "fajr_jamaah": {
+        "default": "mdi:account-group"
+      },
+      "zuhr_jamaah": {
+        "default": "mdi:account-group"
+      },
+      "asr_jamaah": {
+        "default": "mdi:account-group"
+      },
+      "maghrib_jamaah": {
+        "default": "mdi:account-group"
+      },
+      "isha_jamaah": {
+        "default": "mdi:account-group"
+      }
     }
   }
 }

@@ -2,6 +2,7 @@
   "domain": "elm_adhan",
   "name": "East London Mosque Adhan",
   "categories": [
+    "productivity_information",
     "media_entertainment.music_radio_services"
   ],
   "codeowners": [
@@ -14,5 +15,5 @@
   "issue_tracker": "https://github.com/Tinkering247/ha-elm-adhan/issues",
   "requirements": [],
   "single_config_entry": true,
-  "version": "1.1.0"
+  "version": "1.2.0"
 }

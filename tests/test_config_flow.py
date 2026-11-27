@@ -9,7 +9,12 @@ from homeassistant.data_entry_flow import FlowResultType
 from pytest_homeassistant_custom_component.common import MockConfigEntry
 from pytest_homeassistant_custom_component.test_util.aiohttp import AiohttpClientMocker
 
-from custom_components.elm_adhan.const import CONF_SCAN_INTERVAL, DOMAIN
+from custom_components.elm_adhan.const import (
+    CONF_ASR_MITHL,
+    CONF_ISLAMIC_DATE_AT_MAGHRIB,
+    CONF_SCAN_INTERVAL,
+    DOMAIN,
+)
 
 from .conftest import CHANNEL_VIEW, PAGE, USERS, mock_live
 
@@ -56,9 +61,10 @@ async def test_options_flow(hass: HomeAssistant, aioclient_mock: AiohttpClientMo
     result = await hass.config_entries.options.async_init(entry.entry_id)
     assert result["type"] is FlowResultType.FORM
     result = await hass.config_entries.options.async_configure(
-        result["flow_id"], {CONF_SCAN_INTERVAL: 2}
+        result["flow_id"], {CONF_SCAN_INTERVAL: 2, CONF_ASR_MITHL: "2", CONF_ISLAMIC_DATE_AT_MAGHRIB: False}
     )
     assert result["type"] is FlowResultType.CREATE_ENTRY
     await hass.async_block_till_done()
     assert entry.options[CONF_SCAN_INTERVAL] == 2
-    assert entry.runtime_data.update_interval.total_seconds() == 120
+    assert entry.runtime_data.stream.update_interval.total_seconds() == 120
+    assert entry.runtime_data.timetable.asr_mithl == 2

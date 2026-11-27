@@ -3,7 +3,7 @@
     "step": {
       "user": {
         "title": "East London Mosque Adhan",
-        "description": "Adds a sensor with East London Mosque's live Mixlr stream URL and a binary sensor that is on while the mosque is broadcasting."
+        "description": "Adds East London Mosque's prayer timetable (London Unified Prayer Times, from the mosque's website) and its live Mixlr adhan stream: the current prayer, the next time of each prayer, the Islamic date, the stream URL, and whether the mosque is on air."
       }
     },
     "error": {
@@ -18,20 +18,81 @@
     "step": {
       "init": {
         "data": {
-          "scan_interval": "Polling interval"
+          "asr_mithl": "Asr begins at",
+          "islamic_date_at_maghrib": "Start the Islamic day at Maghrib",
+          "scan_interval": "Stream polling interval"
         },
         "data_description": {
+          "asr_mithl": "The timetable lists two Asr times. Hanafi practice uses the second (2 mithl).",
+          "islamic_date_at_maghrib": "The Islamic day begins at sunset. Turn off to change the Islamic date at midnight instead.",
           "scan_interval": "How often to check Mixlr, in minutes. The blueprint forces a refresh at prayer time, so a longer interval is fine."
         }
       }
     }
   },
+  "selector": {
+    "asr_mithl": {
+      "options": {
+        "1": "1 mithl (Shāfi‘ī, Mālikī, Ḥanbalī)",
+        "2": "2 mithl (Ḥanafī)"
+      }
+    }
+  },
   "entity": {
     "binary_sensor": {
-      "live": { "name": "Live" }
+      "live": {
+        "name": "Live"
+      }
     },
     "sensor": {
-      "stream_url": { "name": "Stream URL" }
+      "stream_url": {
+        "name": "Stream URL"
+      },
+      "current_prayer": {
+        "name": "Current prayer"
+      },
+      "islamic_date": {
+        "name": "Islamic date"
+      },
+      "fajr": {
+        "name": "Fajr"
+      },
+      "sunrise": {
+        "name": "Sunrise"
+      },
+      "zuhr": {
+        "name": "Zuhr"
+      },
+      "asr": {
+        "name": "Asr"
+      },
+      "maghrib": {
+        "name": "Maghrib"
+      },
+      "isha": {
+        "name": "Ishā"
+      },
+      "fajr_jamaah": {
+        "name": "Fajr jamā‘ah"
+      },
+      "zuhr_jamaah": {
+        "name": "Zuhr jamā‘ah"
+      },
+      "asr_jamaah": {
+        "name": "Asr jamā‘ah"
+      },
+      "maghrib_jamaah": {
+        "name": "Maghrib jamā‘ah"
+      },
+      "isha_jamaah": {
+        "name": "Ishā jamā‘ah"
+      }
+    }
+  },
+  "issues": {
+    "timetable_expiring": {
+      "title": "East London Mosque timetable is running out",
+      "description": "The stored prayer timetable ends on {last_day}, and the mosque's website ({url}) has not published later dates yet. The prayer entities become unknown after that day. This clears itself once the new timetable is published."
     }
   }
 }
